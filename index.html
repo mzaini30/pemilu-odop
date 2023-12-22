@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pemilu ODOP</title>
+    <link rel="stylesheet" href="./gpm/mzaini30/library-yang-sering-digunakan/css/reset.css">
+    <link rel="stylesheet" href="./uno.css">
+    <script src="./gpm/mzaini30/library-yang-sering-digunakan/js/petite-vue.iife.js"></script>
+</head>
+
+<body>
+    <div class="app" @vue:mounted="mounted"></div>
+    <script type="module">
+        import gosit from "https://esm.sh/gosit@1.0.1";
+
+        let id_spreadsheet = "12rBLHycjSa21TLQC29HQj7ZIZ8oVpf4lNcUgF-8HMf0";
+
+        PetiteVue.createApp({
+            data: [],
+            async mounted() {
+                let result = await gosit(
+                    id_spreadsheet, // spreadsheet id
+                    "Form Responses 1" // sheet name
+                );
+
+
+                let datanya = {
+                    odop_ke: {},
+                    nama_1: {},
+                    nama_2: {},
+                    nama_3: {}
+                };
+
+                let kolom = ["Kamu anggota ODOP dari batch berapa? ", "Nama 1", "Nama 2", "Nama 3"];
+
+                for (let x of result) {
+                    if (datanya.odop_ke[x[kolom[0]]]) {
+                        datanya.odop_ke[x[kolom[0]]] += 1;
+                    } else {
+                        datanya.odop_ke[x[kolom[0]]] = 1;
+                    }
+
+                    if (datanya.nama_1[x[kolom[1]]]) {
+                        datanya.nama_1[x[kolom[1]]] += 1;
+                    } else {
+                        datanya.nama_1[x[kolom[1]]] = 1;
+                    }
+
+                    if (datanya.nama_2[x[kolom[2]]]) {
+                        datanya.nama_2[x[kolom[2]]] += 1;
+                    } else {
+                        datanya.nama_2[x[kolom[2]]] = 1;
+                    }
+
+                    if (datanya.nama_3[x[kolom[3]]]) {
+                        datanya.nama_3[x[kolom[3]]] += 1;
+                    } else {
+                        datanya.nama_3[x[kolom[3]]] = 1;
+                    }
+
+
+                }
+                console.log(datanya);
+            }
+        }).mount(".app")
+    </script>
+</body>
+
+</html>
